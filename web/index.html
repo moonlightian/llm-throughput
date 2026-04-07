@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLM 压测数据看板</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>LLM 压测数据看板</h1>
+            <p class="subtitle">最后更新: <span id="last-updated">-</span></p>
+        </header>
+
+        <section class="charts-section">
+            <div class="chart-row">
+                <div class="chart-container">
+                    <h3>吞吐 vs 并发数</h3>
+                    <canvas id="tpsChart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h3>延迟分布</h3>
+                    <canvas id="latencyChart"></canvas>
+                </div>
+            </div>
+            <div class="chart-row">
+                <div class="chart-container">
+                    <h3>成功率</h3>
+                    <canvas id="successRateChart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h3>QPS vs 并发数</h3>
+                    <canvas id="qpsChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section class="filter-section">
+            <div class="filter-group">
+                <label>GPU 型号:</label>
+                <select id="filter-gpu">
+                    <option value="">全部</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Engine:</label>
+                <select id="filter-engine">
+                    <option value="">全部</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>并发数:</label>
+                <select id="filter-concurrency">
+                    <option value="">全部</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Stream:</label>
+                <select id="filter-stream">
+                    <option value="">全部</option>
+                    <option value="true">是</option>
+                    <option value="false">否</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>搜索:</label>
+                <input type="text" id="filter-search" placeholder="Job ID 或备注...">
+            </div>
+            <button id="reset-filters" class="btn btn-secondary">重置筛选</button>
+        </section>
+
+        <section class="toolbar">
+            <div class="table-info">
+                <span id="data-count">0 条记录</span>
+            </div>
+            <div class="export-buttons">
+                <button id="export-csv" class="btn">导出 CSV</button>
+                <button id="export-json" class="btn">导出 JSON</button>
+            </div>
+        </section>
+
+        <section class="table-section">
+            <div class="table-wrapper">
+                <table id="results-table">
+                    <thead>
+                        <tr>
+                            <th data-sort="job_id">Job ID <span class="sort-icon"></span></th>
+                            <th data-sort="timestamp">时间 <span class="sort-icon"></span></th>
+                            <th data-sort="gpu_model">加速卡 <span class="sort-icon"></span></th>
+                            <th data-sort="engine">Engine <span class="sort-icon"></span></th>
+                            <th data-sort="concurrency">并发 <span class="sort-icon"></span></th>
+                            <th data-sort="is_stream">Stream <span class="sort-icon"></span></th>
+                            <th data-sort="total_tps">总TPS <span class="sort-icon"></span></th>
+                            <th data-sort="output_tps">输出TPS <span class="sort-icon"></span></th>
+                            <th data-sort="ftl_avg">FTL(avg) <span class="sort-icon"></span></th>
+                            <th data-sort="ftl_p90">FTL(P90) <span class="sort-icon"></span></th>
+                            <th data-sort="tpot_avg">TPOT <span class="sort-icon"></span></th>
+                            <th data-sort="query_latency_avg">整句延迟 <span class="sort-icon"></span></th>
+                            <th data-sort="query_latency_p90">P90延迟 <span class="sort-icon"></span></th>
+                            <th data-sort="num_queries">请求数 <span class="sort-icon"></span></th>
+                            <th data-sort="qps">QPS <span class="sort-icon"></span></th>
+                            <th data-sort="success_rate">成功率 <span class="sort-icon"></span></th>
+                            <th data-sort="input_len_avg">输入长度 <span class="sort-icon"></span></th>
+                            <th data-sort="output_len_avg">输出长度 <span class="sort-icon"></span></th>
+                            <th data-sort="remark">备注</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="19" class="loading">加载中...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="pagination">
+                <button id="prev-page" class="btn btn-small" disabled>&lt; 上一页</button>
+                <span id="page-info">第 1 页</span>
+                <button id="next-page" class="btn btn-small" disabled>下一页 &gt;</button>
+            </div>
+        </section>
+
+        <footer>
+            <p>LLM Pressure Test Dashboard | Powered by Chart.js</p>
+        </footer>
+    </div>
+
+    <script src="js/data-loader.js"></script>
+    <script src="js/table.js"></script>
+    <script src="js/charts.js"></script>
+    <script src="js/export.js"></script>
+    <script>
+        // 初始化应用
+        document.addEventListener('DOMContentLoaded', function() {
+            DataLoader.load().then(() => {
+                Table.init();
+                Charts.init();
+                Export.init();
+            });
+        });
+    </script>
+</body>
+</html>
