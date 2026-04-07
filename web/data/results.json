@@ -1,0 +1,36 @@
+{
+  "last_updated": "2026-04-07T12:44:55.001044Z",
+  "data": [
+    {
+      "job_id": "251219-Tkmxk",
+      "timestamp": "2026-04-07T12:44:54.992559Z",
+      "gpu_model": "PPU-ZW810E*8",
+      "engine": "vllm",
+      "engine_ver": "",
+      "concurrency": 128,
+      "is_stream": true,
+      "total_tps": 2372.16,
+      "output_tps": 2206.4,
+      "input_tps": 165.76,
+      "tpot_avg": 5.8058426709834465e-05,
+      "ftl_avg": 0.18268774449825287,
+      "ftl_p90": 0.24359850883483886,
+      "ftl_min": 0.08246803283691406,
+      "ftl_max": 0.43109750747680664,
+      "query_latency_avg": 28.31590426278611,
+      "query_latency_p90": 29.244896292686462,
+      "query_latency_p50": 29.09635591506958,
+      "query_latency_p80": 29.192822408676147,
+      "num_queries": 384,
+      "qps": 4.413,
+      "success_rate": 1.0,
+      "input_len_avg": 37.5625,
+      "input_len_min": 19,
+      "input_len_max": 73,
+      "output_len_avg": 500.0,
+      "output_len_min": 500,
+      "output_len_max": 500,
+      "remark": "vllm//总耗时87.0s"
+    }
+  ]
+}
